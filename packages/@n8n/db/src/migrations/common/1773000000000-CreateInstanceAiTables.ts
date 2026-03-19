@@ -83,7 +83,7 @@ export class CreateInstanceAiTables1773000000000 implements ReversibleMigration 
 				column('runId').varchar().primary.notNull,
 				column('workflowName').varchar().primary.notNull,
 				column('resourceId').varchar(),
-				column('snapshot').text.notNull,
+				column('snapshot').binary.notNull,
 			)
 			.withIndexOn('workflowName').withTimestamps;
 	}
