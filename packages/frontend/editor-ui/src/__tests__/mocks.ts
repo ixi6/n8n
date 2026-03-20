@@ -282,7 +282,6 @@ export function createMockEnterpriseSettings(
 		binaryDataS3: false,
 		workerView: false,
 		advancedPermissions: false,
-
 		workflowDiffs: false,
 		namedVersions: false,
 		projects: {

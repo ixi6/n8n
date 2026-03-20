@@ -11,23 +11,27 @@ afterEach(() => {
 });
 
 describe('apiKeyHasScope', () => {
-	it('should return API key scope middleware', () => {
+	it('should return tagged API key scope middleware', () => {
 		publicApiKeyService.getApiKeyScopeMiddleware.mockReturnValue(jest.fn());
 
-		middlewares.apiKeyHasScope('credential:create');
+		const result = middlewares.apiKeyHasScope('credential:create');
 
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		expect(publicApiKeyService.getApiKeyScopeMiddleware).toHaveBeenCalledWith('credential:create');
+		expect(result.__apiKeyScope).toBe('credential:create');
 	});
 });
 
 describe('apiKeyHasScopeWithGlobalScopeFallback', () => {
-	it('should return API key scope middleware', () => {
+	it('should return tagged API key scope middleware', () => {
 		publicApiKeyService.getApiKeyScopeMiddleware.mockReturnValue(jest.fn());
 
-		middlewares.apiKeyHasScopeWithGlobalScopeFallback({ scope: 'credential:create' });
+		const result = middlewares.apiKeyHasScopeWithGlobalScopeFallback({
+			scope: 'credential:create',
+		});
 
 		// eslint-disable-next-line @typescript-eslint/unbound-method
 		expect(publicApiKeyService.getApiKeyScopeMiddleware).toHaveBeenCalledWith('credential:create');
+		expect(result.__apiKeyScope).toBe('credential:create');
 	});
 });

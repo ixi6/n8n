@@ -86,15 +86,36 @@ export const validCursor = (
 	return next();
 };
 
+export type ScopeTaggedMiddleware = ((...args: unknown[]) => unknown) & {
+	__apiKeyScope: ApiKeyScope;
+};
+
+function tagMiddleware(
+	middleware: (...args: unknown[]) => unknown,
+	apiKeyScope: ApiKeyScope,
+): ScopeTaggedMiddleware {
+	const tagged: ScopeTaggedMiddleware = Object.assign(
+		(req: unknown, res: unknown, next: unknown) => middleware(req, res, next),
+		{ __apiKeyScope: apiKeyScope },
+	);
+	return tagged;
+}
+
 export const apiKeyHasScope = (apiKeyScope: ApiKeyScope) => {
-	return Container.get(PublicApiKeyService).getApiKeyScopeMiddleware(apiKeyScope);
+	return tagMiddleware(
+		Container.get(PublicApiKeyService).getApiKeyScopeMiddleware(apiKeyScope),
+		apiKeyScope,
+	);
 };
 
 export const apiKeyHasScopeWithGlobalScopeFallback = (
 	config: { scope: ApiKeyScope & Scope } | { apiKeyScope: ApiKeyScope; globalScope: Scope },
 ) => {
-	const scope = 'scope' in config ? config.scope : config.apiKeyScope;
-	return Container.get(PublicApiKeyService).getApiKeyScopeMiddleware(scope);
+	const apiKeyScope = 'scope' in config ? config.scope : config.apiKeyScope;
+	return tagMiddleware(
+		Container.get(PublicApiKeyService).getApiKeyScopeMiddleware(apiKeyScope),
+		apiKeyScope,
+	);
 };
 
 export const validLicenseWithUserQuota = (
