@@ -1,0 +1,32 @@
+{
+	"name": "n8n-nodes-jsonplaceholder",
+	"version": "0.1.0",
+	"description": "n8n community node that fetches data from JSONPlaceholder API, demonstrating sandboxed execution with 3rd-party dependencies",
+	"license": "MIT",
+	"author": {
+		"name": "n8n Community",
+		"email": "community@n8n.io"
+	},
+	"main": "dist/nodes/JsonPlaceholder/JsonPlaceholder.node.js",
+	"scripts": {
+		"build": "tsc",
+		"prepublishOnly": "npm run build"
+	},
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"nodes": [
+			"dist/nodes/JsonPlaceholder/JsonPlaceholder.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.17.0",
+		"n8n-workflow": "file:../../packages/workflow",
+		"typescript": "~5.7.0"
+	},
+	"peerDependencies": {
+		"n8n-workflow": ">=1.0.0"
+	},
+	"dependencies": {
+		"lodash": "^4.17.23"
+	}
+}
